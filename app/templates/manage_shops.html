@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Manage Shops{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <h1>Manage Shops</h1>
+    
+    <!-- Add New Shop Form -->
+    <div class="form-section">
+        <h2>Add New Shop</h2>
+        <form action="{{ url_for('auth.register') }}" method="POST">
+            <div class="form-group">
+                <input type="text" name="shop_name" placeholder="Shop Name" required>
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" placeholder="Password" required>
+            </div>
+            <button type="submit">Add Shop</button>
+        </form>
+    </div>
+    
+    <!-- Existing Shops List -->
+    <div class="shops-list">
+        <h2>Existing Shops</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Shop Name</th>
+                    <th>Created Date</th>
+                    <th>Last Login</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for shop in shops %}
+                <tr>
+                    <td>{{ shop.shop_name }}</td>
+                    <td>{{ shop.created_at.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ shop.last_login.strftime('%Y-%m-%d %H:%M') if shop.last_login else 'Never' }}</td>
+                    <td>
+                        <button onclick="resetPassword('{{ shop.id }}')">Reset Password</button>
+                        {% if not shop.is_admin %}
+                        <button onclick="deleteShop('{{ shop.id }}')">Delete</button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add some JavaScript for shop management -->
+<script>
+function resetPassword(shopId) {
+    if (confirm('Are you sure you want to reset this shop\'s password?')) {
+        // Add password reset functionality
+    }
+}
+
+function deleteShop(shopId) {
+    if (confirm('Are you sure you want to delete this shop?')) {
+        // Add shop deletion functionality
+    }
+}
+</script>
+{% endblock %}

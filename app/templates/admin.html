@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <h1>Video Player Statistics</h1>
+
+    <div class="export-section">
+        <a href="{{ url_for('admin.download') }}" class="btn-export">
+            Download Statistics (Excel)
+        </a>
+    </div>
+
+    <!-- Video Statistics Table -->
+    <section class="stats-section">
+        <div class="table-container">
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th>Shop Name</th>
+                        <th>55 inch UHD</th>
+                        <th>55 Inch Mini LED</th>
+                        <th>65 Inch Gaming QLED</th>
+                        <th>65 Inch Mini LED</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for shop_name, counts in stats.items() %}
+                    <tr>
+                        <td>{{ shop_name }}</td>
+                        <td>{{ counts['55 inch UHD'] }}</td>
+                        <td>{{ counts['55 Inch Mini LED'] }}</td>
+                        <td>{{ counts['65 Inch Gaming QLED'] }}</td>
+                        <td>{{ counts['65 Inch Mini LED'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Register New Shop Section -->
+    <section class="register-section">
+        <h2>Register New Shop</h2>
+        <form action="{{ url_for('admin.register') }}" method="POST" class="register-form">
+            <div class="form-group">
+                <label for="shop_name">Shop Name:</label>
+                <input type="text" id="shop_name" name="shop_name" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn-primary">Register Shop</button>
+        </form>
+    </section>
+
+    <!-- Manage Shops Section -->
+    <section class="manage-section">
+        <h2>Manage Shops</h2>
+        <table class="shops-table">
+            <thead>
+                <tr>
+                    <th>Shop Name</th>
+                    <th>Registration Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for shop in shops %}
+                <tr>
+                    <td>{{ shop.shop_name }}</td>
+                    <td>{{ shop.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>
+                        <form action="{{ url_for('admin.delete', shop_id=shop.id) }}"
+                              method="POST"
+                              onsubmit="return confirm('Are you sure you want to delete this shop?');">
+                            <button type="submit" class="btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.admin-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    color: #2c3e50;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.export-section {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.btn-export {
+    background-color: #27ae60;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s;
+}
+
+.btn-export:hover {
+    background-color: #219a52;
+}
+
+.stats-section, .register-section, .manage-section {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.stats-table, .shops-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+}
+
+.stats-table th, .shops-table th,
+.stats-table td, .shops-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #e2e8f0;
+}
+
+.stats-table th, .shops-table th {
+    background-color: #f8fafc;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.stats-table tr:nth-child(even),
+.shops-table tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+.register-form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.btn-primary {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+}
+
+h2 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .admin-container {
+        padding: 10px;
+    }
+
+    .stats-section, .register-section, .manage-section {
+        padding: 15px;
+    }
+
+    .btn-export {
+        display: block;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .table-container {
+        margin: 0 -15px;
+    }
+
+    .stats-table th, .shops-table th,
+    .stats-table td, .shops-table td {
+        padding: 8px;
+        font-size: 14px;
+    }
+}
+</style>
+{% endblock %}
