@@ -1,0 +1,22 @@
+# Virtual environment
+venv/
+env/
+
+# Database
+*.db
+*.sqlite3
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Environment variables
+.env
+
+# Videos folder
+app/static/videos/*
+!app/static/videos/.gitkeep
+
+# System files
+.DS_Store
+Thumbs.db
