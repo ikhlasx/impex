@@ -13,3 +13,10 @@ class Config:
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16MB max file size
     UPLOAD_FOLDER = os.path.join('app', 'static', 'videos')
     ALLOWED_EXTENSIONS = {'mp4', 'avi', 'mov', 'wmv'}
+
+    if os.getenv('VERCEL_ENV') == 'production':
+        VIDEOS_STORAGE = 'cloud'  # Use cloud storage
+        CLOUD_STORAGE_URL = os.getenv('CLOUD_STORAGE_URL')
+    else:
+        VIDEOS_STORAGE = 'local'  # Use local storage
+        UPLOAD_FOLDER = os.path.join('app', 'static', 'videos')

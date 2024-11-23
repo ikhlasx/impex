@@ -1,21 +1,40 @@
-# Virtual environment
+# Virtual Environment
 venv/
 env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# IDEs
+.idea/
+.vscode/
+
+# Environment variables
+.env
+.env.local
 
 # Database
 *.db
 *.sqlite3
 
-# Python cache
-__pycache__/
-*.py[cod]
+# Logs
+*.log
 
-# Environment variables
-.env
-
-# Videos folder
+# Videos
 app/static/videos/*
 !app/static/videos/.gitkeep
+
+# Vercel
+.vercel
+.now
 
 # System files
 .DS_Store
